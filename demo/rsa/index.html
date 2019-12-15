@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>在线SHA256withRSA加签/验签</title>
+
+    <script language="JavaScript" type="text/javascript" src="js/jsrsasign-all-min.js"></script>
+
+
+    <style type="text/css">
+        .footer {
+            position: fixed;
+            bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Sample Application for RSA signing in JavaScript</h1>
+
+<h3>SHA256withRSA -> Base64 -> encodeURI (url)</h3>
+<h3>@see <a href="https://github.com/kjur/jsrsasign/wiki/Tutorial-for-Signature-class">github/Tutorial-for-Signature-class</a>
+</h3>
+
+<form name="form1">
+    <table border="1" cellspacing="0" style="text-align: center; width: 90%">
+        <tr>
+            <th>PKCS type</th>
+            <th>Private key</th>
+            <th>Sign</th>
+            <th>Verify</th>
+        </tr>
+        <tr>
+            <td>Private key (PKCS#1)</td>
+            <td>
+<textarea id="privateKeyId_PKCS1" rows="10" cols="65">
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpQIBAAKCAQEAy9x9zpI3NR+jSYsYvwo3TYL2tcnlQ06ZgAKtLAoCAajiar08
+s6nxDdLSz3LO35TF4JsMhRMkh90Q6Sk+QHDKhZVQikL52RGPuQIGGW/dcLD0c7wW
+2GFVoDcj1ePLOgPL4BUZcBamW3gxlhqehUeKE0F56q3jGrS2+NEL/a+Bdxfy0Cwv
+zt48JD2uNpsW+9OHZGMrjwLwlsipwpTC/fv64YMdYuIZ+jQAdkypTA9av/2ij7JE
+XK84kvsc1bs7wD4XTo0mJMCeJjlKLhP8etyuQXmDbu7x4rR7t7PEo/IXDJogqFPN
+63/kbq16tc5CBsY4Wn85ER5SIzVKDA7MQtXYiQIDAQABAoIBAQCiO1O64k0g746I
+ZjNJRJ4CByjCPms+hvxNDNQ26bfzDi0w+GuoJqN4dr/g6uKKtuBJ/9mUxUka/egJ
+RRMPQTNJ3yt6/BXMktcnSd8EuyskFQ5UU+hyRfNYTskr293My1yhdOkLdFrrC9ma
+NJDWS7or3L1i7wJ+LDY4CFRcjCChXndbSeV+NpUbdiOqeTcEKkell3jhDaOqSoQh
+GpODhLPpNbKxeKiZSOrUqZecNe7G6+bstvxh0PyPo0irHqXrSMZPEkUXC3GmO8/W
+jGQn0f9l4a0ChEcLwBsX0FtOQJaCrMk0v/4iA4U2STLHmBPMQVaMOMrjlYjzIihT
+1R3wBN2JAoGBAPIlmu11n6/jopuW55h9tAxhY4M9ilwqf8YaCSJdiqoeOgVnY2ax
+u/QxPIMPZ0g5TrArxYAQIkgBMGqonJE9JpM67h5+HNlNhucGKvDzdJ2HmVoMix38
+bBZF93kkohHaa5ePClIGdHSqKzH41+rUPWx32S1Gmm89xsHhQjSsYBtHAoGBANeG
+K1qisgKHQM8ZVJhLhPXpkSJuKe5+uumhCCn1GCFOuCymxFKdVIT0BWDxrQjzREt6
+MMEnU8hnnk05qNifjFTT6lN7PuAZqz155sYZ/A1FZAUymBYRB9C8TIgiagCa8XvU
+D5kewEzq/Web5OYNzZcwfdHtZysyG4f4jFwwVrWvAoGAf04D+KmpTZiYycH5enND
+8GpXHg2Bq1jwmh7gBIA3QZ7olCS53qi8jvI/xQuZGiB+3SH2EJDq5P4zDTAeOEF1
+AVyvCbr1wcz/in/0nX7xJUy/89a6YQZvcPpR1A/NYSN7A1BBdcRM/3Tjhr80DRKO
+RHNx61q+IJPS5eVeoECruksCgYEAvuLRcTQaD401hHe96ikw+RDGf8UslFRgPd5n
+Oaoflhh/nOSTi0xXeG4ceXFzvTKgsWzm05x+Y0gK+ADyn/Inu1X5+7hzxs5VUVyv
+XZPUHvjvjn7yHtE0p9auvgAk/KY+7Vqz+f03eqjCicqUYIGnLpo/RfhLYQG/Sp2D
+y37wvXcCgYEA7nZ02By9qAjtyTsW+6CBRdsMW/1V/TKMb7vDkznI+tA5sxWMTxQY
+FMzohNDvXvOu+4QLlmhhfusfPUVKSjWU6bqYdCXPSJUd89PzkyICJ3XjFMndf5i5
+497h78OE7iCfbiooEtUy/I5AVW6gTNUuy24hIMqePolTcQ0pIq0ZuoQ=
+-----END RSA PRIVATE KEY-----                     
+</textarea>
+            </td>
+            <td>Text message to be signed.<br/><br/>
+                <input type="text" name="toSignValue" value="aaa"/><br/><br/>
+                <input type="button" value="sign_with_PKCS1" onclick="sign('privateKeyId_PKCS1')">
+                <input type="button" value="sign_with_PKCS8" onclick="sign('privateKeyId_PKCS8')">
+            </td>
+            <td>
+                Public key (PKCS#8) <br/><br/>
+                <textarea id="publicKey#8" rows="10" cols="65">
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy9x9zpI3NR+jSYsYvwo3
+TYL2tcnlQ06ZgAKtLAoCAajiar08s6nxDdLSz3LO35TF4JsMhRMkh90Q6Sk+QHDK
+hZVQikL52RGPuQIGGW/dcLD0c7wW2GFVoDcj1ePLOgPL4BUZcBamW3gxlhqehUeK
+E0F56q3jGrS2+NEL/a+Bdxfy0Cwvzt48JD2uNpsW+9OHZGMrjwLwlsipwpTC/fv6
+4YMdYuIZ+jQAdkypTA9av/2ij7JEXK84kvsc1bs7wD4XTo0mJMCeJjlKLhP8etyu
+QXmDbu7x4rR7t7PEo/IXDJogqFPN63/kbq16tc5CBsY4Wn85ER5SIzVKDA7MQtXY
+iQIDAQAB
+-----END PUBLIC KEY-----
+</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Private key <br>(PKCS#8) <br><br> For JAVA</td>
+            <td>
+<textarea id="privateKeyId_PKCS8" rows="10" cols="65">
+-----BEGIN PRIVATE KEY-----
+MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDL3H3Okjc1H6NJ
+ixi/CjdNgva1yeVDTpmAAq0sCgIBqOJqvTyzqfEN0tLPcs7flMXgmwyFEySH3RDp
+KT5AcMqFlVCKQvnZEY+5AgYZb91wsPRzvBbYYVWgNyPV48s6A8vgFRlwFqZbeDGW
+Gp6FR4oTQXnqreMatLb40Qv9r4F3F/LQLC/O3jwkPa42mxb704dkYyuPAvCWyKnC
+lML9+/rhgx1i4hn6NAB2TKlMD1q//aKPskRcrziS+xzVuzvAPhdOjSYkwJ4mOUou
+E/x63K5BeYNu7vHitHu3s8Sj8hcMmiCoU83rf+RurXq1zkIGxjhafzkRHlIjNUoM
+DsxC1diJAgMBAAECggEBAKI7U7riTSDvjohmM0lEngIHKMI+az6G/E0M1Dbpt/MO
+LTD4a6gmo3h2v+Dq4oq24En/2ZTFSRr96AlFEw9BM0nfK3r8FcyS1ydJ3wS7KyQV
+DlRT6HJF81hOySvb3czLXKF06Qt0WusL2Zo0kNZLuivcvWLvAn4sNjgIVFyMIKFe
+d1tJ5X42lRt2I6p5NwQqR6WXeOENo6pKhCEak4OEs+k1srF4qJlI6tSpl5w17sbr
+5uy2/GHQ/I+jSKsepetIxk8SRRcLcaY7z9aMZCfR/2XhrQKERwvAGxfQW05AloKs
+yTS//iIDhTZJMseYE8xBVow4yuOViPMiKFPVHfAE3YkCgYEA8iWa7XWfr+Oim5bn
+mH20DGFjgz2KXCp/xhoJIl2Kqh46BWdjZrG79DE8gw9nSDlOsCvFgBAiSAEwaqic
+kT0mkzruHn4c2U2G5wYq8PN0nYeZWgyLHfxsFkX3eSSiEdprl48KUgZ0dKorMfjX
+6tQ9bHfZLUaabz3GweFCNKxgG0cCgYEA14YrWqKyAodAzxlUmEuE9emRIm4p7n66
+6aEIKfUYIU64LKbEUp1UhPQFYPGtCPNES3owwSdTyGeeTTmo2J+MVNPqU3s+4Bmr
+PXnmxhn8DUVkBTKYFhEH0LxMiCJqAJrxe9QPmR7ATOr9Z5vk5g3NlzB90e1nKzIb
+h/iMXDBWta8CgYB/TgP4qalNmJjJwfl6c0PwalceDYGrWPCaHuAEgDdBnuiUJLne
+qLyO8j/FC5kaIH7dIfYQkOrk/jMNMB44QXUBXK8JuvXBzP+Kf/SdfvElTL/z1rph
+Bm9w+lHUD81hI3sDUEF1xEz/dOOGvzQNEo5Ec3HrWr4gk9Ll5V6gQKu6SwKBgQC+
+4tFxNBoPjTWEd73qKTD5EMZ/xSyUVGA93mc5qh+WGH+c5JOLTFd4bhx5cXO9MqCx
+bObTnH5jSAr4APKf8ie7Vfn7uHPGzlVRXK9dk9Qe+O+OfvIe0TSn1q6+ACT8pj7t
+WrP5/Td6qMKJypRggacumj9F+EthAb9KnYPLfvC9dwKBgQDudnTYHL2oCO3JOxb7
+oIFF2wxb/VX9Moxvu8OTOcj60DmzFYxPFBgUzOiE0O9e8677hAuWaGF+6x89RUpK
+NZTpuph0Jc9IlR3z0/OTIgIndeMUyd1/mLnj3uHvw4TuIJ9uKigS1TL8jkBVbqBM
+1S7LbiEgyp4+iVNxDSkirRm6hA==
+-----END PRIVATE KEY-----                    
+</textarea>
+            </td>
+            <td>
+                Generated Signature<input type="button" value="Clear" onclick="document.form1.signature.value = ''"><br/>
+                <textarea name="signature" rows="8" cols="50"></textarea><br/>
+            </td>
+            <td align="left">Use Public key verify <input type="button" value="verify"
+                                                          onclick="verify()"><br/><br/><br/>
+                verify result:
+                <div id="verifyResult"></div>
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="footer">
+    Authored by @qrqhuang
+</div>
+</body>
+
+
+<script type="text/javascript">
+    function sign(privateKeyId) {
+        let signatureNode = document.form1.signature;
+        signatureNode.value = "";
+
+        let toSignValue = document.form1.toSignValue.value;
+        let keyPemString = document.getElementById(privateKeyId).value;
+
+        try {
+            let rsaPrivateKey = KEYUTIL.getKey(keyPemString);
+
+            // initialize
+            let sig = new KJUR.crypto.Signature({"alg": "SHA256withRSA"});
+            // initialize for signature generation
+            sig.init(rsaPrivateKey);   // rsaPrivateKey of RSAKey object
+            // calculate signature
+            let sigValueHex = sig.signString(toSignValue);
+
+            let sigValue = hextob64(sigValueHex);
+            //when post to url, encode it
+            // sigValue = encodeURIComponent(sigValue);
+            signatureNode.value = sigValue;
+        } catch (e) {
+            signatureNode.value = e.toString();
+        }
+    }
+
+    function verify() {
+        let verifyNode = document.getElementById("verifyResult");
+        verifyNode.value = "";
+
+        let signatureNode = document.form1.signature;
+        let signature = signatureNode.value;
+        if (signature === '') {
+            _displayStatus(2, 'Sign first!');
+            return false;
+        }
+
+        let sStatus;
+        let msg = "";
+
+        try {
+            let rsaPublicKey = KEYUTIL.getKey(document.getElementById("publicKey#8").value);
+            // initialize
+            let sig = new KJUR.crypto.Signature({"alg": "SHA256withRSA"});
+            // initialize for signature validation
+            sig.init(rsaPublicKey); // signer's certificate
+            // update data
+            sig.updateString('aaa');
+            // verify signature
+            let isValid = sig.verify(b64tohex(signature));
+
+            sStatus = isValid === true ? 0 : 1;
+        } catch (e) {
+            sStatus = -1;
+            msg = e.toString();
+        }
+
+        _displayStatus(sStatus, msg);
+    }
+
+    function _displayStatus(sStatus, msg) {
+        let div1 = document.getElementById("verifyResult");
+        if (sStatus === 0) {
+            div1.style.backgroundColor = "lightgreen";
+            div1.innerHTML = "This signature is *VALID*.";
+        } else if (sStatus === 1) {
+            div1.style.backgroundColor = "deeppink";
+            div1.innerHTML = "This signature is *NOT VALID*.";
+        } else if (sStatus === -1) {
+            div1.style.backgroundColor = "red";
+            div1.innerHTML = "Error occured: " + msg;
+        } else if (sStatus === 2) {
+            div1.style.backgroundColor = "yellow";
+            div1.innerHTML = msg;
+        }
+    }
+
+
+</script>
+
+
+</html>
